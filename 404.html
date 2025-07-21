@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .glow {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-900 to-indigo-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+        <div class="p-8 md:p-12 text-center">
+            <div class="floating mb-8">
+                <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-white/20 border-2 border-white/30">
+                    <i class="fas fa-exclamation-triangle text-5xl text-white"></i>
+                </div>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 glow">404</h1>
+            <h2 class="text-2xl md:text-3xl font-semibold text-white mb-6">Oops! Page Not Found</h2>
+            
+            <p class="text-white/80 mb-8 text-lg">
+                The page you're looking for doesn't exist or has been moved. 
+                Maybe it was never here in the first place.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="window.history.back()" class="px-6 py-3 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    Go Back
+                </button>
+                <a href="/" class="pulse px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-home"></i>
+                    Return Home
+                </a>
+            </div>
+            
+            <div class="mt-10 pt-6 border-t border-white/20">
+                <p class="text-white/60 text-sm">
+                    Still lost? Try searching or check out our <a href="/sitemap" class="text-blue-300 hover:underline">sitemap</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-4 left-0 right-0 text-center">
+        <p class="text-white/50 text-sm">© 2023 Your Company. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('button, a[href]');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.classList.add('shadow-lg');
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.classList.remove('shadow-lg');
+                });
+            });
+            
+            // Random confetti on page load
+            setTimeout(() => {
+                createConfetti();
+            }, 500);
+        });
+        
+        function createConfetti() {
+            const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+            const container = document.querySelector('body');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'absolute w-2 h-2 rounded-full';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.opacity = '0.7';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                container.appendChild(confetti);
+                
+                const animation = confetti.animate([
+                    { top: '-10px', opacity: 0.7 },
+                    { top: '100vh', opacity: 0 }
+                ], {
+                    duration: 3000 + Math.random() * 5000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                    delay: Math.random() * 2000
+                });
+                
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+    </script>
+</body>
+      </html>
