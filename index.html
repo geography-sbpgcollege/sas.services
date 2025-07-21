@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Portal - Parent URL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Header with logo and title -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white rounded-full p-4 shadow-xl pulse">
+                    <i class="fas fa-lock text-4xl text-purple-600"></i>
+                </div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Services Access Portal</h1>
+            <p class="text-xl mb-8 opacity-90">This is the parent URL for our online services platform</p>
+            
+            <!-- Main card with message -->
+            <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-xl p-8 mb-12 card-hover border border-white border-opacity-20">
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-exclamation-triangle text-5xl text-yellow-300 mb-6"></i>
+                    <h2 class="text-2xl font-semibold mb-4">Direct Access Not Available</h2>
+                    <p class="text-lg mb-6 max-w-2xl">
+                        This is the parent URL for our services portal and cannot be accessed directly. 
+                        Please use the specific service URLs provided to you for accessing our online services.
+                    </p>
+                    <div class="w-24 h-1 bg-white bg-opacity-30 rounded-full mb-6"></div>
+                    <p class="text-sm opacity-80">
+                        If you believe you've reached this page in error, please contact our support team.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Support information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="bg-white bg-opacity-10 rounded-lg p-6 card-hover">
+                    <i class="fas fa-envelope text-3xl mb-4 text-blue-200"></i>
+                    <h3 class="font-semibold text-lg mb-2">Email Support</h3>
+                    <p class="text-sm opacity-90">postmaster@mygeography.dpdns.org</p>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-6 card-hover">
+                    <i class="fas fa-phone-alt text-3xl mb-4 text-green-200"></i>
+                    <h3 class="font-semibold text-lg mb-2">Phone Support</h3>
+                    <p class="text-sm opacity-90">+1 (555) 123-4567</p>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="mt-16 pt-8 border-t border-white border-opacity-20">
+                <p class="text-sm opacity-70">
+                    &copy; 2025 Your Company Name. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add a gentle fade-in animation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Add a subtle background animation
+            const bg = document.querySelector('body');
+            let hue = 240;
+            setInterval(() => {
+                hue = (hue + 0.2) % 360;
+                bg.style.background = `linear-gradient(135deg, hsl(${hue}, 80%, 70%) 0%, hsl(${(hue + 30) % 360}, 80%, 70%) 100%)`;
+            }, 50);
+        });
+    </script>
+</body>
+  </html>
