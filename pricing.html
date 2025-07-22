@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans | MyGeography Department</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .plan-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .recommended-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background-color: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-2">Choose Your Plan</h1>
+            <p class="text-xl opacity-90">Access premium educational resources tailored for geography students</p>
+            <div class="mt-6">
+                <a href="https://mygeography.dpdns.org" class="inline-block bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-50 transition">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pricing Toggle -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="flex justify-center mb-12">
+            <div class="bg-white p-1 rounded-full shadow-md">
+                <button id="yearly-toggle" class="px-6 py-2 rounded-full font-medium bg-blue-600 text-white">Yearly</button>
+                <button id="monthly-toggle" class="px-6 py-2 rounded-full font-medium text-gray-600 hover:bg-gray-100">Monthly</button>
+            </div>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Organization Plan -->
+            <div class="plan-card bg-white rounded-xl overflow-hidden border border-gray-200 relative">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Organization Only</h3>
+                    <p class="text-gray-600 mb-4">Exclusive for department students</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-800">Free</span>
+                    </div>
+                    <ul class="feature-list space-y-3 mb-8">
+                        <li>Department verification required</li>
+                        <li>Basic access to resources</li>
+                        <li>Limited downloads (3/day)</li>
+                        <li>Community access</li>
+                    </ul>
+                    <button class="w-full py-3 px-4 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition flex items-center justify-center">
+                        <i class="fas fa-check-circle mr-2"></i> Check Status
+                    </button>
+                </div>
+            </div>
+
+            <!-- Standard Plan -->
+            <div class="plan-card bg-white rounded-xl overflow-hidden border border-blue-200 relative">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Standard</h3>
+                    <p class="text-gray-600 mb-4">Great for casual learners</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-800 yearly-price">₹65</span>
+                        <span class="text-4xl font-bold text-gray-800 monthly-price hidden">₹7</span>
+                        <span class="text-gray-600">/year</span>
+                    </div>
+                    <ul class="feature-list space-y-3 mb-8">
+                        <li>6 downloads per day</li>
+                        <li>35% off on online books</li>
+                        <li>Access to standard resources</li>
+                        <li>Community access</li>
+                    </ul>
+                    <button class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center">
+                        <i class="fas fa-shopping-cart mr-2"></i> Pay Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="plan-card bg-white rounded-xl overflow-hidden border-2 border-blue-500 relative transform scale-105">
+                <div class="recommended-badge">Most Popular</div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Premium</h3>
+                    <p class="text-gray-600 mb-4">For serious geography students</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-800 yearly-price">₹195</span>
+                        <span class="text-4xl font-bold text-gray-800 monthly-price hidden">₹18</span>
+                        <span class="text-gray-600">/year</span>
+                    </div>
+                    <ul class="feature-list space-y-3 mb-8">
+                        <li>Unlimited downloads</li>
+                        <li>Access to upcoming books</li>
+                        <li>50% off on online books</li>
+                        <li>Priority support</li>
+                        <li>Exclusive webinars</li>
+                    </ul>
+                    <button class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center">
+                        <i class="fas fa-shopping-cart mr-2"></i> Pay Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ultra Plan -->
+            <div class="plan-card bg-white rounded-xl overflow-hidden border border-purple-200 relative">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Ultra</h3>
+                    <p class="text-gray-600 mb-4">The complete package</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-800 yearly-price">₹290</span>
+                        <span class="text-4xl font-bold text-gray-800 monthly-price hidden">₹27</span>
+                        <span class="text-gray-600">/year</span>
+                    </div>
+                    <ul class="feature-list space-y-3 mb-8">
+                        <li>Unlimited downloads</li>
+                        <li>Early access to upcoming books</li>
+                        <li>Free beta features</li>
+                        <li>Study help (reserved time)</li>
+                        <li>Personalized recommendations</li>
+                        <li>VIP support</li>
+                    </ul>
+                    <button class="w-full py-3 px-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition flex items-center justify-center">
+                        <i class="fas fa-crown mr-2"></i> Pay Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="mt-16 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left font-medium text-gray-700 hover:bg-gray-50 flex justify-between items-center">
+                        <span>How do I verify my organization status?</span>
+                        <i class="fas fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-gray-600">
+                        Organization verification is done through your department's administration. Please contact your department head or visit the administration office with your student ID to get verified.
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left font-medium text-gray-700 hover:bg-gray-50 flex justify-between items-center">
+                        <span>Can I upgrade my plan later?</span>
+                        <i class="fas fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-gray-600">
+                        Yes, you can upgrade your plan at any time. When you upgrade, you'll only pay the difference between your current plan and the new plan, prorated for the remaining time in your subscription.
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left font-medium text-gray-700 hover:bg-gray-50 flex justify-between items-center">
+                        <span>What payment methods do you accept?</span>
+                        <i class="fas fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-gray-600">
+                        We accept all major credit/debit cards, UPI payments, and net banking. We're also working on adding more payment options in the future.
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-4 text-left font-medium text-gray-700 hover:bg-gray-50 flex justify-between items-center">
+                        <span>Is there a refund policy?</span>
+                        <i class="fas fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-gray-600">
+                        We offer a 14-day money-back guarantee for all paid plans. If you're not satisfied with our service within the first 14 days, you can request a full refund.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold">MyGeography Department</h3>
+                    <p class="text-gray-400">Enhancing geographical education since 2023</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2023 MyGeography Department. All rights reserved. | <a href="https://mygeography.dpdns.org" class="hover:text-white transition">mygeography.dpdns.org</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle between yearly and monthly pricing
+        document.getElementById('yearly-toggle').addEventListener('click', function() {
+            this.classList.add('bg-blue-600', 'text-white');
+            this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+            document.getElementById('monthly-toggle').classList.remove('bg-blue-600', 'text-white');
+            document.getElementById('monthly-toggle').classList.add('text-gray-600', 'hover:bg-gray-100');
+            
+            document.querySelectorAll('.yearly-price').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('.monthly-price').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.pricing-period').forEach(el => el.textContent = '/year');
+        });
+
+        document.getElementById('monthly-toggle').addEventListener('click', function() {
+            this.classList.add('bg-blue-600', 'text-white');
+            this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+            document.getElementById('yearly-toggle').classList.remove('bg-blue-600', 'text-white');
+            document.getElementById('yearly-toggle').classList.add('text-gray-600', 'hover:bg-gray-100');
+            
+            document.querySelectorAll('.yearly-price').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.monthly-price').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('.pricing-period').forEach(el => el.textContent = '/month');
+        });
+
+        // FAQ accordion functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                // Toggle content visibility
+                content.classList.toggle('hidden');
+                
+                // Rotate icon
+                if (content.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Plan card hover effect enhancement
+        document.querySelectorAll('.plan-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (!card.classList.contains('transform')) {
+                    card.classList.add('transform', 'scale-105');
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!card.classList.contains('border-blue-500')) {
+                    card.classList.remove('transform', 'scale-105');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
