@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles that can't be done with Tailwind */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 0.5s 2.5s forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        
+        .portal-content {
+            display: none;
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 900;
+        }
+        
+        .menu-open .menu-overlay {
+            left: 0;
+        }
+        
+        .content-area {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        
+        .menu-open .content-area {
+            transform: translateX(80%);
+            filter: brightness(0.8);
+        }
+        
+        .menu-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-open .menu-icon {
+            transform: rotate(90deg);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c7d2fe;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a5b4fc;
+        }
+        
+        /* For demo iframe */
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Splash Screen -->
+    <div class="splash-screen">
+        <div class="text-center text-white">
+            <i class="fas fa-graduation-cap text-6xl mb-4"></i>
+            <h1 class="text-4xl font-bold mb-2">Student Portal</h1>
+            <p class="text-xl opacity-90">Loading your educational resources...</p>
+            <div class="mt-6 h-2 w-48 bg-white bg-opacity-30 rounded-full mx-auto overflow-hidden">
+                <div class="h-full bg-white rounded-full progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Portal Content (hidden initially) -->
+    <div class="portal-content min-h-screen">
+        <!-- Menu Overlay -->
+        <div class="menu-overlay bg-white shadow-xl">
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-indigo-600">Menu</h2>
+                    <button id="close-menu" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <nav class="flex-grow">
+                    <ul class="space-y-2">
+                        <li>
+                            <button onclick="openTab('download-content')" class="menu-tab w-full text-left px-4 py-3 rounded-lg flex items-center hover:bg-indigo-50 text-indigo-700">
+                                <i class="fas fa-download mr-3"></i>
+                                Download Content
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openTab('live-classes')" class="menu-tab w-full text-left px-4 py-3 rounded-lg flex items-center hover:bg-indigo-50">
+                                <i class="fas fa-chalkboard-teacher mr-3"></i>
+                                Live Class/Quiz
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openTab('notices')" class="menu-tab w-full text-left px-4 py-3 rounded-lg flex items-center hover:bg-indigo-50">
+                                <i class="fas fa-bell mr-3"></i>
+                                Notices
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openTab('profile-info')" class="menu-tab w-full text-left px-4 py-3 rounded-lg flex items-center hover:bg-indigo-50">
+                                <i class="fas fa-user-circle mr-3"></i>
+                                Profile Info
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="mt-auto">
+                    <button onclick="logout()" class="w-full px-4 py-3 bg-red-100 text-red-600 rounded-lg flex items-center justify-center hover:bg-red-200 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-50">
+                <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                    <button id="menu-toggle" class="menu-icon p-2 rounded-full hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-bars text-gray-700 text-xl"></i>
+                    </button>
+                    
+                    <div class="text-right">
+                        <h1 class="text-xl font-bold text-indigo-700">John Doe</h1>
+                        <p class="text-sm text-gray-500">Class 12 - Science</p>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="container mx-auto px-4 py-6">
+                <!-- Download Content Tab -->
+                <div id="download-content" class="tab-content">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Download Content</h2>
+                    <p class="text-gray-600 mb-4">Access study materials, notes, and resources from our content repository.</p>
+                    
+                    <div class="iframe-container w-full h-[80vh]">
+                        <iframe src="https://example.com" id="content-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    
+                </div>
+                
+                <!-- Live Classes/Quiz Tab -->
+                <div id="live-classes" class="tab-content">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Live Classes/Quizzes</h2>
+                    
+                    <ul class="flex border-b border-gray-200 mb-6">
+                        <li class="-mb-px mr-1">
+                            <button onclick="openLiveSection('live-schedule')" class="live-section-tab active bg-white inline-block py-2 px-4 text-indigo-600 font-semibold border-l border-t border-r rounded-t">
+                                Live Classes
+                            </button>
+                        </li>
+                        <li class="-mb-px mr-1">
+                            <button onclick="openLiveSection('quiz-schedule')" class="live-section-tab bg-white inline-block py-2 px-4 text-gray-500 hover:text-indigo-600 font-semibold border-l border-t border-r rounded-t">
+                                Live Quizzes
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <!-- Live Classes Section -->
+                    <div id="live-schedule" class="live-section">
+                        <div class="space-y-4">
+                            <!-- Upcoming Class -->
+                            <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-indigo-500">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">Advanced Calculus</h3>
+                                        <p class="text-gray-600">Prof. Sarah Johnson</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-indigo-500 mr-2"></i>
+                                            <span class="text-sm">Today, 2:30 PM - 4:00 PM</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="view-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
+                                            <i class="fas fa-play mr-2"></i> Join Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Future Class 1 -->
+                            <div class="bg-white rounded-xl shadow-sm p-4">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">Organic Chemistry</h3>
+                                        <p class="text-gray-600">Dr. Michael Chen</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                            <span class="text-sm">Tomorrow, 9:00 AM - 10:30 AM</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button disabled class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg cursor-not-allowed">
+                                            <i class="far fa-calendar-alt mr-2"></i> Set Reminder
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Future Class 2 -->
+                            <div class="bg-white rounded-xl shadow-sm p-4">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">Modern Physics</h3>
+                                        <p class="text-gray-600">Dr. Emily Rodriguez</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                            <span class="text-sm">Friday, 11:00 AM - 12:30 PM</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button disabled class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg cursor-not-allowed">
+                                            <i class="far fa-calendar-alt mr-2"></i> Set Reminder
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div id="quiz-schedule" class="live-section hidden">
+                        <div class="space-y-4">
+                            <!-- Current Quiz -->
+                            <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">Trigonometry Quiz</h3>
+                                        <p class="text-gray-600">10 Questions • 20 Minutes</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                            <span class="text-sm">Active for next 45 minutes</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="view-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
+                                            <i class="fas fa-play mr-2"></i> Start Quiz
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Upcoming Quiz 1 -->
+                            <div class="bg-white rounded-xl shadow-sm p-4">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">Chemistry Basics</h3>
+                                        <p class="text-gray-600">15 Questions • 30 Minutes</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                            <span class="text-sm">Tomorrow, 3:00 PM - 3:30 PM</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button disabled class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg cursor-not-allowed">
+                                            <i class="far fa-calendar-alt mr-2"></i> Set Reminder
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Upcoming Quiz 2 -->
+                            <div class="bg-white rounded-xl shadow-sm p-4">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div class="mb-3 md:mb-0">
+                                        <h3 class="font-bold text-lg text-gray-800">History Test</h3>
+                                        <p class="text-gray-600">25 Questions • 45 Minutes</p>
+                                        <div class="flex items-center mt-1">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                            <span class="text-sm">Monday, 10:00 AM - 10:45 AM</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button disabled class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg cursor-not-allowed">
+                                            <i class="far fa-calendar-alt mr-2"></i> Set Reminder
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notices Tab -->
+                <div id="notices" class="tab-content">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Notices & Announcements</h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Important Notice -->
+                        <div class="bg-white rounded-xl shadow p-4 border-l-4 border-red-500">
+                            <div class="flex items-start">
+                                <div class="bg-red-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-exclamation text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">Important: Exam Schedule Change</h3>
+                                    <p class="text-gray-600 mb-2">The Physics exam originally scheduled for Friday has been moved to next Tuesday at 9 AM due to unforeseen circumstances.</p>
+                                    <p class="text-sm text-gray-500">Posted: Today, 10:30 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Regular Notice 1 -->
+                        <div class="bg-white rounded-xl shadow p-4">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-info-circle text-indigo-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">Library Hours Extended</h3>
+                                    <p class="text-gray-600 mb-2">The school library will remain open until 8 PM every weekday until the end of the semester to support study groups.</p>
+                                    <p class="text-sm text-gray-500">Posted: Yesterday, 3:15 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Regular Notice 2 -->
+                        <div class="bg-white rounded-xl shadow p-4">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-info-circle text-indigo-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">Sports Day Announcement</h3>
+                                    <p class="text-gray-600 mb-2">All students are invited to participate in the annual sports day event on Saturday, March 18th. Registration closes this Friday.</p>
+                                    <p class="text-sm text-gray-500">Posted: 2 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Regular Notice 3 -->
+                        <div class="bg-white rounded-xl shadow p-4">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-info-circle text-indigo-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">New Career Counseling Sessions</h3>
+                                    <p class="text-gray-600 mb-2">The career counseling office has added new sessions for college application guidance. Sign up at the administration office.</p>
+                                    <p class="text-sm text-gray-500">Posted: 4 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Info Tab -->
+                <div id="profile-info" class="tab-content">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Profile Information</h2>
+                    
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <!-- Profile Photo Section -->
+                            <div class="md:w-1/3 flex flex-col items-center">
+                                <div class="w-32 h-32 rounded-full bg-indigo-100 flex items-center justify-center mb-4 overflow-hidden">
+                                    <img src="https://via.placeholder.com/150" alt="Profile Photo" class="w-full h-full object-cover">
+                                </div>
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm mb-8">
+                                    <i class="fas fa-camera mr-2"></i> Change Photo
+                                </button>
+                                
+                                <div class="w-full bg-indigo-50 rounded-lg p-4">
+                                    <h3 class="font-semibold text-indigo-700 mb-2">Account Status</h3>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Membership:</span>
+                                            <span class="font-medium">Premium</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Valid Until:</span>
+                                            <span class="font-medium">Jul 15, 2023</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Class:</span>
+                                            <span class="font-medium">12 - Science</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Student ID:</span>
+                                            <span class="font-medium">STU2023-1294</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile Details Section -->
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Personal Information</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Full Name</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">John Michael Doe</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Email</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">john.doe@studentportal.com</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Phone Number</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">+1 (555) 123-4567</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Date of Birth</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">June 15, 2005</div>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Address Information</h3>
+                                <div class="grid grid-cols-1 gap-4 mb-6">
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Street Address</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">1234 Education Lane, Apt 201</div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-gray-600 text-sm mb-1">City</label>
+                                            <div class="bg-gray-50 p-3 rounded-lg">New York</div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-600 text-sm mb-1">ZIP Code</label>
+                                            <div class="bg-gray-50 p-3 rounded-lg">10001</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 text-sm mb-1">Country</label>
+                                        <div class="bg-gray-50 p-3 rounded-lg">United States</div>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Additional Information</h3>
+                                <div>
+                                    <label class="block text-gray-600 text-sm mb-1">Special Notes</label>
+                                    <div class="bg-gray-50 p-3 rounded-lg min-h-20">
+                                        Student requires additional resources for mathematics. Allergies: Peanuts. Emergency Contact: Mary Doe (Mother) +1 (555) 987-6543
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Logout Notification -->
+        <div id="logout-notification" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-1000 hidden">
+            <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                        <i class="fas fa-check text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">You have been logged out successfully</h3>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-500">You can now safely close this page.</p>
+                    </div>
+                    <div class="mt-6">
+                        <button onclick="closeLogoutNotification()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // After page loads, show splash screen then main content
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bar
+            const progressBar = document.querySelector('.progress-bar');
+            let width = 0;
+            const interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 20);
+            
+            // After splash screen animation completes, show portal
+            setTimeout(function() {
+                document.querySelector('.portal-content').style.display = 'block';
+                // Open default tab
+                openTab('download-content');
+                
+                // Setup event listeners
+                setupEventListeners();
+            }, 3000);
+        });
+        
+        function setupEventListeners() {
+            // Menu toggle
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Close menu button
+            document.getElementById('close-menu').addEventListener('click', function() {
+                document.body.classList.remove('menu-open');
+            });
+            
+            // Make all links open in the same frame
+            document.querySelectorAll('a, .btn-download, .view-btn').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // In a real implementation, you would handle the navigation here
+                    // For demo purposes, we'll just log it
+                    console.log('Link clicked:', this.textContent.trim());
+                    
+                    // If it's a view button, show a message
+                    if (this.classList.contains('view-btn')) {
+                        openTab('live-classes');
+                        alert("In a real implementation, this would launch the live class/quiz in the current window.");
+                    }
+                });
+            });
+        }
+        
+        function openTab(tabId) {
+            // Close menu when selecting a tab (on mobile)
+            document.body.classList.remove('menu-open');
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all menu tabs
+            document.querySelectorAll('.menu-tab').forEach(tab => {
+                tab.classList.remove('text-indigo-700');
+                tab.classList.remove('bg-indigo-50');
+            });
+            
+            // Activate selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Highlight menu item for current tab
+            document.querySelectorAll('.menu-tab').forEach(tab => {
+                if (tab.textContent.includes(tabId.replace('-', ' '))) {
+                    tab.classList.add('text-indigo-700');
+                    tab.classList.add('bg-indigo-50');
+                }
+            });
+            
+            // If opening download content, modify iframe src to prevent X-Frame issues
+            if (tabId === 'download-content') {
+                document.getElementById('content-iframe').src = 'about:blank';
+                setTimeout(() => {
+                    // In a real implementation, this would be your content domain
+                    document.getElementById('content-iframe').src = 'https://example.com';
+                }, 100);
+            }
+        }
+        
+        function openLiveSection(sectionId) {
+            // Hide all live sections
+            document.querySelectorAll('.live-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('.live-section-tab').forEach(tab => {
+                tab.classList.remove('text-indigo-600');
+                tab.classList.remove('border-indigo-600');
+                tab.classList.add('text-gray-500');
+                tab.classList.add('hover:text-indigo-600');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Activate selected tab
+            document.querySelectorAll('.live-section-tab').forEach(tab => {
+                if (tab.textContent.includes(sectionId.replace('-', ' '))) {
+                    tab.classList.add('text-indigo-600');
+                    tab.classList.add('border-indigo-600');
+                    tab.classList.remove('text-gray-500');
+                    tab.classList.remove('hover:text-indigo-600');
+                }
+            });
+        }
+        
+        function logout() {
+            document.body.classList.remove('menu-open');
+            document.getElementById('logout-notification').classList.remove('hidden');
+        }
+        
+        function closeLogoutNotification() {
+            document.getElementById('logout-notification').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
